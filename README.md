@@ -235,6 +235,25 @@ We are a team of Texas State University students developing this project as part
     * Work on any bugs for final demo
     * Assist in making features user friendly
 
+## Sprint 3 ##
+* **Israel Ibinayin:**
+    * `Jira Task SCRUM-124: `
+        * [SCRUM-124](https://cs3398s24klingons.atlassian.net/browse/SCRUM-124), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/pull-requests/36)
+    * `Jira Task SCRUM-9: `
+        * [SCRUM-9](https://cs3398s24klingons.atlassian.net/browse/SCRUM-9), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/pull-requests/42)
+    * `Jira Task SCRUM-135: `
+        * [SCRUM-135](https://cs3398s24klingons.atlassian.net/browse/SCRUM-135), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/pull-requests/37)
+    * `Jira Task SCRUM-13: `
+        * [SCRUM-13](https://cs3398s24klingons.atlassian.net/browse/SCRUM-13), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/pull-requests/34)
+    * `Jira Task SCRUM-10: `
+        * [SCRUM-10](https://cs3398s24klingons.atlassian.net/browse/SCRUM-10), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/pull-requests/49)
+    * `Jira Task SCRUM-11: `
+        * [SCRUM-11](https://cs3398s24klingons.atlassian.net/browse/SCRUM-11), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/pull-requests/53)
+    * `Jira Task SCRUM-149: `
+        * [SCRUM-149](https://cs3398s24klingons.atlassian.net/browse/SCRUM-149), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/pull-requests/52)
+* **John Yamamoto:**
+* **Matthew Ruiz:**
+* **Samuel Pope:**
 ## Screenshots
 ![FlowNote Screenshot](notes/static/notes/css/images/notePage.png)
 
