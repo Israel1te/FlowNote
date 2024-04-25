@@ -251,9 +251,82 @@ We are a team of Texas State University students developing this project as part
         * [SCRUM-11](https://cs3398s24klingons.atlassian.net/browse/SCRUM-11), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/pull-requests/53)
     * `Jira Task SCRUM-149: `
         * [SCRUM-149](https://cs3398s24klingons.atlassian.net/browse/SCRUM-149), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/pull-requests/52)
-* **John Yamamoto:**
-* **Matthew Ruiz:**
-* **Samuel Pope:**
+        
+* **Samuel Pope:** "Fill In"
+
+    * `Jira Task SCRUM-90: Present Analysis Feedback.`
+        * [SCRUM-90](https://cs3398s24klingons.atlassian.net/browse/SCRUM-90), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/commits/6014bcb0f2d7908ba62064004898faf69778548d)
+
+    * `Jira Task SCRUM-97: Enhancements and Fine-Tuning.`
+        * [SCRUM-97](https://cs3398s24klingons.atlassian.net/browse/SCRUM-97), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/commits/2951276e36265a7d336938da29999dce2d1662ba)
+
+    * `Jira Task SCRUM-98: Import and Write Scripts to train BERT, GPT Transformers.`
+        * [SCRUM-98](https://cs3398s24klingons.atlassian.net/browse/SCRUM-98), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/commits/22f80dd7ec2e65ca943d13f45be38708eaef6ca8)
+
+    * `Jira Task SCRUM-125: https://cs3398s24klingons.atlassian.net/browse/SCRUM-125.`
+        * [SCRUM-125](https://cs3398s24klingons.atlassian.net/browse/SCRUM-125), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/commits/d50377fd9cdd5fefce6cd441c525a320caecffb6)
+
+    *`Jira Task SCRUM-126: Enhance GPT-2 Autocompletion UI.`
+        * [SCRUM-126](https://cs3398s24klingons.atlassian.net/browse/SCRUM-126), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/commits/19ee19fdb00734c85f4b43bff44ffe5604e40c62)
+
+    * `Jira Task SCRUM-128:  Implement Vocabulary Extraction.`
+        * [SCRUM-128](https://cs3398s24klingons.atlassian.net/browse/SCRUM-128), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/commits/6c737d61a3124878d168f3ab4db24d3517709f8b)
+
+    * `Jira Task SCRUM-129: Refactor and Simplify AIEngine Modules.`
+        * [SCRUM-129](https://cs3398s24klingons.atlassian.net/browse/SCRUM-129), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/commits/7891ef432f28097e3e0e995eb34caca81e9b14fa)
+
+    * `Jira Task SCRUM-141: Update Existing Groups Instead of Making New Ones (Auto Group).`
+        * [SCRUM-141](https://cs3398s24klingons.atlassian.net/browse/SCRUM-141), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/commits/b234f898fb67fd6414aaec522c5ab63b55459439)
+
+    * `Jira Task SCRUM-142: Content Length on Autocomplete Not Reflected in generate_content Parameters.`
+        * [SCRUM-142](https://cs3398s24klingons.atlassian.net/browse/SCRUM-142), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/commits/d4c879eabbc9dd42c931bd4936180a463e832ae3)
+
+    * `Jira Task SCRUM-148: Reduce Model Computational Costs (Celery, Redis).`
+        * [SCRUM-148](https://cs3398s24klingons.atlassian.net/browse/SCRUM-148), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/commits/c30519e4b8084034be12afcbcc46fc3de91d3ecc)
+
+* **Matthew Ruiz:** "Fill In"
+
+    * `Jira Task SCRUM-101: Adding Social Authentication Login.`
+        * [SCRUM-101](https://cs3398s24klingons.atlassian.net/browse/SCRUM-101), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/commits/0f738dd7d8f7459b5dff1539cf8602b5ea6dd023)
+
+    * `Jira Task SCRUM-136: Fix styling where necessary.`
+        * [SCRUM-136](https://cs3398s24klingons.atlassian.net/browse/SCRUM-136), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/commits/e68a6add7fe2b929256f756c1c423d6383374267)
+
+    * `Jira Task SCRUM-138: Implement Change Password Functionality.`
+        * [SCRUM-138](https://cs3398s24klingons.atlassian.net/browse/SCRUM-138), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/commits/7c75f0417e8179a65052a15ecfb8f1828c9772dc)
+
+    * `Jira Task SCRUM-139: Implement Change Username Functionality.`
+        * [SCRUM-139](https://cs3398s24klingons.atlassian.net/browse/SCRUM-139), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/commits/0fb219f580dc39567e77b5a3126831edc7105019)
+
+    * `Jira Task SCRUM-140: Contact Support Functionality.`
+        * [SCRUM-140](https://cs3398s24klingons.atlassian.net/browse/SCRUM-140), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/commits/7b5a7b163d8da95e84837d041c9fd0c7e907c573)
+
+* **John Yamamoto:** "Implmented sorting and pinning features to the note list page."
+
+    * `Jira Task SCRUM-132: Implement front end ability to pin specific notes to the top of the list.`
+        * [SCRUM-132](https://cs3398s24klingons.atlassian.net/browse/SCRUM-132), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/commits/0ccc12a8896fd21a246a591d17216d90d2bfb02a)
+
+    * `Jira Task SCRUM-133: Implement alphabetical sorting of note list.`
+        * [SCRUM-133](https://cs3398s24klingons.atlassian.net/browse/SCRUM-133), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/commits/03e005c47f0ccfb68a03a393c4b9eec528e32fb4)
+
+    * `Jira Task SCRUM-134: Implement time (most recent) sorting of note list.`
+        * [SCRUM-134](https://cs3398s24klingons.atlassian.net/browse/SCRUM-134), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/commits/0d435febde54115cee36f9ecaf509a719abcffaa)
+
+
+## 3rd Report ##
+![burnup3](notes/static/notes/css/images/burnup3.png)
+
+## Next Steps ##
+* **Israel Ibinayin**
+    * "Fill in"
+* **Samuel Pope**
+    * "Fill in"
+* **Matthew Ruiz**
+    * "Fill in"
+* **John Yamamoto**
+    * Add Sort function to other other features.
+    * Add Pin function to other features.
+    * Add more interactive note features. 
 ## Screenshots
 ![FlowNote Screenshot](notes/static/notes/css/images/notePage.png)
 
