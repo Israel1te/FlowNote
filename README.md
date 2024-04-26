@@ -252,7 +252,7 @@ We are a team of Texas State University students developing this project as part
     * `Jira Task SCRUM-149: `
         * [SCRUM-149](https://cs3398s24klingons.atlassian.net/browse/SCRUM-149), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/pull-requests/52)
         
-* **Samuel Pope:** "Fill In"
+* **Samuel Pope:** "Enhanced AI Features"
 
     * `Jira Task SCRUM-90: Present Analysis Feedback.`
         * [SCRUM-90](https://cs3398s24klingons.atlassian.net/browse/SCRUM-90), [BitBucket](https://bitbucket.org/cs3398s24klingons/%7Bb2711573-9b30-4954-9eb2-f53fdeb8c451%7D/commits/6014bcb0f2d7908ba62064004898faf69778548d)
@@ -320,7 +320,8 @@ We are a team of Texas State University students developing this project as part
 * **Israel Ibinayin**
     * "Fill in"
 * **Samuel Pope**
-    * "Fill in"
+    * Train GPT-2 to fine-tune summarization
+    * Allow users to customize their response length and sequence size.
 * **Matthew Ruiz**
     * "Fill in"
 * **John Yamamoto**
