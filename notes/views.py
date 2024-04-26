@@ -1,6 +1,8 @@
 # from .serializers import NoteSerializer, BlogPostSerializer
 # from rest_framework import viewsets
+import json
 import os
+from typing import Dict
 import openai
 import logging
 
@@ -30,19 +32,11 @@ from .ai import generate_response
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
-
-def generate_keywords(request, note_id):
-    if request.method == "POST":
-        generate_keywords_task.delay(note_id)  
-        return JsonResponse({'status': 'started'})
-    else:
-        return JsonResponse({'error': 'Invalid request'}, status=400)
-
 def generate_summary(request, note_id):
     if request.method == "POST":
         
-        generate_summary_task.delay(note_id)  
-        return JsonResponse({'status': 'started'})
+        summary = generate_summary_task(note_id)  
+        return JsonResponse({'summary': summary})
     else:
         return JsonResponse({'error': 'Invalid request'}, status=400)
 
@@ -71,12 +65,21 @@ def process_feedback(request, note_id):
 def generate_flashcards(request, note_id):
     if request.method == 'POST':
         note = get_object_or_404(Note, pk=note_id)  
+        logging.info(f'Generating Flashcards for Note: {note.title}')
+        #result: dict[str, str] = generate_flashcards_task(note_id)
         
-        result = generate_flashcards_task.delay(note_id)
+        if note.content: #make sure it is not empty
+            response = generate_response("Provide terms and their definitions in JSON Format (dict[str, str]) for the provided text: " + note.content)
+            logging.info(f'Generated Flashcards Response: {response}')
+            try:
+                flashcards = json.loads(response) 
+            except json.JSONDecodeError:
+                return JsonResponse({'error': 'Invalid response format'}, status=500)
+
+            logging.info(f'Generated Flashcards: {flashcards}\n')
+            return JsonResponse(flashcards)
         
-        # flashcards = {'1': 'def1','t2': 'def2',}
-        # return JsonResponse(flashcards)
-        return JsonResponse({'task_id': result.task_id})
+        return JsonResponse({'error': 'Invalid request'}, status=405)
     else:
         return JsonResponse({'error': 'Invalid request'}, status=405)
 
@@ -128,32 +131,8 @@ def auto_group_all_view(request):
         if new_groups:
             logging.debug(f"Auto Grouping for all notes successful. Created {new_groups.count} new groups: {new_groups}")
             
-        # Display a success message / notification to the user.
         return redirect('notes:group_list') 
     return render(request, 'notes/auto_group_all.html')
-
-# def analyze(request, note_id):
-#     if request.method == "POST":
-        
-#         note = get_object_or_404(Note, pk=note_id)
-#         analysis_type = request.POST.get('type', 'both')
-        
-#         result = analyze_note(note_id)
-        
-#         keywords = result.get('keywords', [])
-#         summary = result.get('summary', '')  
-        
-#         if analysis_type == 'keywords':
-#             result = {'keywords': keywords}
-#         elif analysis_type == 'summary':
-#             result = {'summary': summary}
-#         else:
-#             result = {'keywords': keywords, 'summary': summary}
-        
-#         return JsonResponse(result)
-#     else:
-#         return JsonResponse({'error': 'Invalid request'}, status=400)
-
 
 def generate_response_from_prompt(request):
     if request.method == 'GET':
@@ -190,31 +169,25 @@ class GroupSearchView(ListView):
             return NoteGroup.objects.filter(Q(title__icontains=query), owner=self.request.user)
         else:
             return NoteGroup.objects.filter(owner=self.request.user)
-        
-def assign_note_to_group(request):
-    if request.method == 'POST':
-        form = NoteGroupAssignmentForm(request.POST)
-        if form.is_valid():
-            note = form.cleaned_data['note']
-            groups = form.cleaned_data['groups']
-            for group in groups:
-                note.groups.add(group)
-            return redirect('notes:group_list')
-    else:
-        form = NoteGroupAssignmentForm()
-    
-    return render(request, 'group/group_assign.html', {'form': form})
 
-def group_edit(request, pk):
-    group = get_object_or_404(NoteGroup, pk=pk)
+def note_remove_from_group(request, group_id, note_id):
+    group = get_object_or_404(NoteGroup, id=group_id)
+    note = get_object_or_404(Note, id=note_id)
+    note.groups.remove(group)  
+    return redirect('notes:group_detail', pk=group_id)
+       
+def group_edit(request, pk=None):
+    group = get_object_or_404(NoteGroup, pk=pk) if pk else None
     if request.method == 'POST':
         form = NoteGroupForm(request.POST, instance=group)
         if form.is_valid():
-            form.save()
-            return redirect('notes:group_list')
+            group = form.save()  
+            return redirect('notes:group_detail', pk=group.pk)
     else:
         form = NoteGroupForm(instance=group)
-    return render(request, 'group/group_form.html', {'form': form})
+        note_ids = list(group.notes.values_list('id', flat=True)) if group else []
+
+    return render(request, 'group/group_form.html', {'form': form, 'note_ids': note_ids})
                   
 def group_delete(request, pk):
     group = get_object_or_404(NoteGroup, pk=pk)
@@ -257,18 +230,6 @@ def group_list(request):
 
 def about(request):
     return render(request, 'about.html')
-
-class NoteSearchView(ListView):
-    model = Note
-    template_name = 'note_search.html'
-    context_object_name = 'notes'
-
-    def get_queryset(self):
-        query = self.request.GET.get('q')
-        if query:
-            return Note.objects.filter(Q(title__icontains=query) | Q(content__icontains=query), owner=self.request.user)
-        else:
-            return Note.objects.filter(owner=self.request.user)
 
 """ User Auth Views """
 @login_required
@@ -350,6 +311,18 @@ def create_note(request):
     else:
         form = NoteForm()
     return render(request, 'note_form.html', {'form': form})
+
+class NoteSearchView(ListView):
+    model = Note
+    template_name = 'note_search.html'
+    context_object_name = 'notes'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return Note.objects.filter(Q(title__icontains=query) | Q(content__icontains=query), owner=self.request.user)
+        else:
+            return Note.objects.filter(owner=self.request.user)
 
 class NoteListView(ListView):
     model = Note

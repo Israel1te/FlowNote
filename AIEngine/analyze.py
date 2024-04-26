@@ -59,18 +59,11 @@ def analyze(content, processed_content):
 
 def generate_definition(keyword):
     
-    definition = model.generate(
-        f"Define the term: {keyword}",
-        max_length=100,
-        num_return_sequences=1,
-        temperature=0.5,
-        top_k=20,
-        top_p=0.75
-    )[0]
+    definition = generate_content(f"Define the term: {keyword}",num_return_sequences=1,additional_tokens=100,temperature=0.5, top_k=20,top_p=0.75)[0]
     
     return definition
 
-def generate_keywords(note_content, processed_content) -> list[str]:
+def generate_keywords(note_content, processed_content) -> dict[str, str]:
     
     prompt = f"""
     Text:
@@ -79,10 +72,15 @@ def generate_keywords(note_content, processed_content) -> list[str]:
     "From this list of words: {processed_content} return only a comma separated list of the most important keywords relevant to the text."
     """
     
-    keywords = generate_content(prompt, num_return_sequences=1, additional_tokens=50, temperature=0.5, top_k=20, top_p=0.75)[0]
-    keywords = strip_prompt(prompt, keywords)
+    keywords: str = generate_content(prompt, num_return_sequences=1, additional_tokens=50, temperature=0.5, top_k=20, top_p=0.75)[0]
+    keywords: str = strip_prompt(prompt, keywords)
     
-    return keywords
+    print(keywords + '\n\n')
+    # keyword_list = keywords.split(', ')
+    
+    keywords_dict = clean_keywords(keywords)
+    
+    return keywords_dict
 
 def generate_summary(note_content) -> str:
     prompt = f"""
@@ -99,19 +97,24 @@ def generate_summary(note_content) -> str:
 """ Auto Grouping Methods"""
 def compute_similarity_matrix(contents):
     try:
-        vectorizer = TfidfVectorizer()
+        vectorizer = TfidfVectorizer(min_df=1, max_df=0.7, ngram_range=(1, 2))
         tfidf_matrix = vectorizer.fit_transform(contents)
-        cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
+        
+        if tfidf_matrix.shape[1] == 0:  # No valid terms extracted
+            raise ValueError("No terms left after vectorization; adjust preprocessing or vectorizer settings.")
+        
+        cosine_sim = cosine_similarity(tfidf_matrix)
         return cosine_sim
+    
     except Exception as e:
-        logging.error(f"Error occurred while computing similarity matrix: {e}")
+        logging.error("Failed to compute similarity matrix: %s", e, exc_info=True)
         return None
     
 
 def group_note(target_note, other_notes, similarities, threshold=0.5, group_title=''):
     try:
-        similar_indices = np.where(similarities > threshold)[0]
-        similar_notes = [other_notes[i] for i in similar_indices]
+        similar_indices = [int(i) for i in np.where(similarities > threshold)[0]]
+        similar_notes = [other_notes[i] for i in similar_indices]  
 
         if similar_notes:
             existing_group = find_existing_group(target_note, threshold)
@@ -160,7 +163,10 @@ def group_all_notes(notes, similarity_matrix, threshold=0.5, owner=None, group_t
                         break
                     else:
                         # We're clear to create a new group. Use group_title.
-                        note_group = NoteGroup(title=f"Auto Group {len(note_groups) + 1} - {dt.now().strftime('%Y-%m-%d %H:%M:%S')}", owner=owner)
+                        if group_title:
+                            note_group = NoteGroup(title=group_title, owner=owner)
+                        else:    
+                            note_group = NoteGroup(title=f"Auto Group {len(note_groups) + 1} - {dt.now().strftime('%Y-%m-%d %H:%M:%S')}", owner=owner)
                         note_group.save()
                         note_group.notes.set(group)
                         note_groups.append(note_group)
@@ -170,7 +176,7 @@ def group_all_notes(notes, similarity_matrix, threshold=0.5, owner=None, group_t
 
     return note_groups
 
-def find_existing_group(note, threshold=0.5) -> NoteGroup:
+def find_existing_group(note, threshold=0.2) -> NoteGroup:
     """
     Find an existing group with high similarity to the note's content.
     """
@@ -180,10 +186,14 @@ def find_existing_group(note, threshold=0.5) -> NoteGroup:
             group_contents = [get_preprocessed_content(n) for n in group.notes.all()]
             group_contents.append(get_preprocessed_content(note))
             sim_matrix = compute_similarity_matrix(group_contents)
-
+            
+            if sim_matrix is None:
+                continue
+            
             # Average similarity of 'note' across all notes in the group
             avg_similarity = np.mean(sim_matrix[-1][:-1])
             if avg_similarity > threshold:
+                logging.info(f"Found existing group with similarity: {avg_similarity}")
                 return group
 
     except Exception as e:

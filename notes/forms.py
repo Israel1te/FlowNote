@@ -10,15 +10,35 @@ from ckeditor.widgets import CKEditorWidget
 from django.core.exceptions import ValidationError
 
 class NoteGroupForm(forms.ModelForm):
+    notes = forms.ModelMultipleChoiceField(
+        queryset=Note.objects.all(), 
+        required=False, 
+        widget=forms.CheckboxSelectMultiple, 
+        label='Notes'
+    )
+
     class Meta:
         model = NoteGroup
-        fields = ['title', 'description']
+        fields = ['title', 'description', 'notes']
+
+    def __init__(self, *args, **kwargs):
+        super(NoteGroupForm, self).__init__(*args, **kwargs)
+
     def clean_title(self):
         title = self.cleaned_data['title']
-        # Validation logic 
+        # Validation logic
         # if not title.isalnum():
         #     raise ValidationError('Title should only contain letters and numbers.')
         return title
+
+    def save(self, commit=True):
+        instance = super(NoteGroupForm, self).save(commit=False)
+        
+        if commit:
+            instance.save()
+            self.save_m2m()  
+        
+        return instance
 
 class NoteGroupAssignmentForm(forms.Form):
     note = forms.ModelChoiceField(queryset=Note.objects.all(), required=True, label='Note')

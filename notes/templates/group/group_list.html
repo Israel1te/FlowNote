@@ -4,7 +4,6 @@
 <h2 style="text-align: center;">Note Groups</h2>
 
 <a href="{% url 'notes:group_create' %}" style="text-align: center; text-decoration: none; margin: 20px; padding: 10px; border-radius: 9px;">Create New Group</a>
-<a href="{% url 'notes:assign-note-to-group' %}">Assign Notes</a>
 
 {% if user.userprofile.theme == 'light' %}
 <div id="all-groups">
@@ -36,6 +35,20 @@
 </div>
 
 <style>
+    #group-card {
+        /* Add card styling for each group */
+        background: #fff;
+        border-radius: 8px;
+        padding: 16px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+    }
+    #group-card:hover {
+        /* Scale effect on hover for interactivity */
+        transform: scale(1.05);
+    }
+    
     #group-box-light {
         padding: 15px;
         background-color: var(--bg-color);

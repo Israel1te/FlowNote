@@ -1,0 +1,45 @@
+Text:
+"Artificial Intelligence (AI) is a branch of computer science that aims to create machines capable of intelligent behavior. Major areas of AI research include machine learning, robotics, and natural language processing."
+
+Prompt:
+"Generate a summary for the provided text."
+
+Correct Response:
+"Artificial Intelligence is a sector within computer science focused on developing machines that perform intelligently, with key areas including machine learning, robotics, and natural language processing."
+
+---
+Text:
+"Biodiversity refers to the variety and variability of life on Earth, crucial for ecosystem health and human wellbeing. It encompasses the genetic, species, and ecological diversity across the planet's ecosystems."
+
+Prompt:
+"Generate a summary for the provided text."
+
+Correct Response:
+"Biodiversity is the diversity of life forms on Earth, encompassing genetic, species, and ecological varieties, vital for ecosystem stability and human survival."
+---
+Text:
+"The theory of relativity, developed by Albert Einstein, revolutionized the understanding of space, time, and gravity. The theory is divided into two parts: special relativity and general relativity, and has profound implications on cosmological and astrophysical processes."
+
+Prompt:
+"Generate a summary for the provided text."
+
+Correct Response:
+"Einstein's theory of relativity changed our understanding of space, time, and gravity, consisting of two parts—special and general relativity, and affects various cosmological and astrophysical theories."
+---
+Text:
+"Climate change refers to significant changes in global temperatures and weather patterns over time. While climate variability is natural, human activities have been the primary drivers of climate change since the 1800s, mainly due to burning fossil fuels and deforestation."
+
+Prompt:
+"Generate a summary for the provided text."
+
+Correct Response:
+"Climate change involves major alterations in global weather patterns and temperatures, largely driven by human activities such as deforestation and burning fossil fuels since the 19th century."
+---
+Text:
+"Quantum mechanics is a fundamental theory in physics that describes the physical properties at the scale of atoms and subatomic particles. The theory is crucial for understanding particle physics and the universe's fundamental structure."
+
+Prompt:
+"Generate a summary for the provided text."
+
+Correct Response:
+"Quantum mechanics is a key area in physics focusing on particles at the atomic and subatomic levels, essential for understanding the basic constituents of the universe."

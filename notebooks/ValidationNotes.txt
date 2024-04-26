@@ -1,0 +1,67 @@
+Topic: Autocomplete Example
+Content:
+In an experiment conducted by the biology department, the growth rate of plants was observed under different light conditions.
+What will happen next in the experiment?
+
+Topic: Summarization Example
+Content:
+The historical significance of World War II is profound as it transformed international relations and resulted in drastic shifts in global power dynamics. This conflict introduced advanced weaponry and strategies that reshaped warfare tactics worldwide. Additionally, the war's outcome had a lasting impact on the geopolitical structure of the world, leading to the Cold War.
+Summary:
+This passage discusses the impacts of World War II on warfare, international relations, and global power structures.
+
+Topic: Keyword Extraction Example
+Content:
+Quantum mechanics is a branch of physics that explores the behavior of energy and matter at the atomic and subatomic levels. It challenges classical mechanics with its unique laws of motion and concepts such as wave-particle duality.
+Keywords:
+Quantum mechanics, physics, energy, matter, atomic, subatomic, classical mechanics, motion, wave-particle duality
+
+Topic: Autocomplete Example
+Content:
+During a lecture on macroeconomics, Professor Thompson discussed the relationship between inflation rates and unemployment using the Phillips Curve.
+What did Professor Thompson explain about how these factors interact?
+
+Topic: Summarization Example
+Content:
+Photosynthesis is a process used by plants, algae, and some bacteria to convert light energy into chemical energy. This energy is stored in carbohydrate molecules, such as sugars, which are synthesized from carbon dioxide and water - hence, this process is crucial for life on Earth.
+Summary:
+The summary explains the process of photosynthesis and its importance to Earth's life forms.
+
+Topic: Keyword Extraction Example
+Content:
+The theory of relativity proposed by Einstein revolutionized our understanding of space, time, and gravity. It consists of two parts: special relativity and general relativity.
+Keywords:
+relativity, Einstein, space, time, gravity, special relativity, general relativity
+
+Topic: Autocomplete Example
+Content:
+After studying the impacts of various fertilizers on crop yields, agricultural scientists have found that nitrogen-based fertilizers can significantly increase wheat production.
+What are the potential environmental impacts of using these fertilizers?
+
+Topic: Summarization Example
+Content:
+The French Revolution, starting in 1789, radically transformed French society by overthrowing the monarchy, curtailing aristocratic privileges, and paving the way for modern republicanism. The revolution began with disputes over how to address the country's financial crisis but quickly escalated into a wider struggle for political power.
+Summary:
+This text summarizes the French Revolution's causes, major events, and societal impacts.
+
+Topic: Keyword Extraction Example
+Content:
+Microeconomics examines individual and business decision-making processes and how they affect the use and distribution of scarce resources. Typically, it applies to markets where goods or services are bought and sold.
+Keywords:
+Microeconomics, decision-making, resources, markets, goods, services, scarcity
+
+Topic: Autocomplete Example
+Content:
+To understand the influence of genetic factors on human behavior, psychologists conduct studies comparing the behaviors of monozygotic (identical) twins raised apart and together.
+What conclusions might be drawn from these studies?
+
+Topic: Summarization Example
+Content:
+Global warming refers to the long-term rise in Earth's average surface temperature due to human activities, primarily fossil fuel burning, which increases levels of greenhouse gases in the atmosphere.
+Summary:
+This passage details the causes and effects of global warming on the planet.
+
+Topic: Keyword Extraction Example
+Content:
+Stem cells are unique in their ability to develop into different types of cells in the body during early life and growth. They also serve as a repair system for some tissues by dividing without limit to replenish other cells.
+Keywords:
+Stem cells, development, body, growth, repair, tissues, cells

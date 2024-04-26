@@ -85,11 +85,7 @@ venv/
 *.sql
 .fake
 
-# Jupyter Notebooks, checkpoints, 
-*.ipynb
-.ipynb_checkpoints/Untitled-checkpoint.ipynb
-Untitled.ipynb
-.ipynb_checkpoints
+
 
 # Hugging Face Transformer models, cache
 */hf_*
@@ -108,7 +104,6 @@ Any CPU/
 
 /models 
 /tokenizer
-/notebooks
 
 D
 D:

@@ -1,13 +1,136 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>{% if form.instance.pk %}Edit Group{% else %}Create Group{% endif %}</h2>
+<h2>{{ form.instance.pk|yesno:"Edit Group,Create Group" }}</h2>
 
-<form method="post" action="">
+<form id="group-form" method="post" action="">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save</button>
+    <div class="form-group">
+        <label for="id_title">{{ form.title.label }}</label>
+        {{ form.title }}
+        {{ form.title.errors }}
+    </div>
+
+    <div class="form-group">
+        <label for="id_description">{{ form.description.label }}</label>
+        {{ form.description }}
+        {{ form.description.errors }}
+    </div>
+
+    <div class="form-group notes-cards-container">
+        <label>{{ form.notes.label }}</label>
+        <div class="notes-cards">
+            {% for note in form.notes %}
+                <div class="note-card">
+                    <label for="{{ note.id_for_label }}">
+                        <input type="checkbox" name="{{ note.html_name }}" value="{{ note.choice_value }}" id="{{ note.id_for_label }}" {% if note.choice_value|stringformat:"s" in note_ids %}checked{% endif %}>                        <div class="note-preview">
+                            <p>{{ note.choice_label }}</p>
+                        </div>
+                    </label>
+                </div>
+            {% endfor %}
+        </div>
+        {{ form.notes.errors }}
+    </div>
+
+    <button type="submit" class="btn-save">Save</button>
 </form>
 
-<a href="{% url 'notes:group_list' %}">Back to Group List</a>
+<a href="{% url 'notes:group_list' %}" class="btn-back">Back to Group List</a>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .notes-cards-container {
+        max-height: 300px;
+        overflow-y: auto;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px; /* Spacing between cards */
+    }
+    .note-card {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 10px;
+        width: calc(33.333% - 10px); /* Adjust width for 3 cards in a row, considering the gap */
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .note-checkbox {
+        text-align: right; /* Align the checkbox to the right of the card */
+    }
+    .note-preview {
+        margin-top: 10px;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    input, textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-bottom: 5px;
+    }
+    textarea {
+        resize: vertical;
+    }
+    .checkbox {
+        margin-bottom: 10px;
+    }
+    .checkbox label {
+        margin-left: 5px;
+    }
+    .btn-save, .btn-back {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .btn-save {
+        background-color: #5cb85c;
+        color: white;
+    }
+    .btn-save:hover {
+        background-color: #4cae4c;
+    }
+    .btn-back {
+        background-color: #f0ad4e;
+        color: white;
+    }
+    .btn-back:hover {
+        background-color: #ec971f;
+    }
+    .notes-checkbox-group {
+        border: 1px solid #ddd;
+        padding: 10px;
+        border-radius: 4px;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(event) {
+            const title = form.querySelector('#id_title').value;
+            const description = form.querySelector('#id_description').value;
+            const notes = form.querySelector('#id_notes').value;
+
+            if (!title || !description || !notes) {
+                event.preventDefault();
+                alert('All fields are required');
+            }
+        });
+    });
+
+    
+</script>
 {% endblock %}

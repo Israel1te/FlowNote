@@ -1,0 +1,45 @@
+Text:
+"Climate change poses significant threats to global biodiversity and the overall health of the planet. Rising temperatures, increased carbon dioxide levels, and erratic weather patterns are some of the direct consequences of this phenomenon."
+
+Prompt:
+"From this list of words: climate, change, significant, global, biodiversity, temperature, carbon, dioxide, weather, pattern, poses, threats, health, planet, rising, levels, increased, erratic, patterns, consequences return only a comma separated list of the most important keywords relevant to the text."
+
+Correct Response:
+"climate, change, global, biodiversity, temperature, carbon, dioxide, weather, erratic, patterns"
+---
+Text:
+"Artificial Intelligence (AI) is transforming industries by automating tasks, analyzing vast amounts of data, and solving complex problems. It has applications in various fields such as healthcare, finance, and autonomous driving."
+
+Prompt:
+"From this list of words: artificial, intelligence, transforming, industries, automating, tasks, analyzing, data, solving, problems, applications, fields, healthcare, finance, autonomous, driving return only a comma separated list of the most important keywords relevant to the text."
+
+Correct Response:
+"artificial, intelligence, automating, tasks, analyzing, data, solving, problems, healthcare, finance, autonomous"
+---
+Text:
+"William Shakespeare's plays and sonnets are pivotal in English literature. His use of iambic pentameter and themes of love, betrayal, and destiny are iconic."
+
+Prompt:
+"From this list of words: William, Shakespeare, plays, sonnets, pivotal, English, literature, use, iambic, pentameter, themes, love, betrayal, destiny, iconic return only a comma separated list of the most important keywords relevant to the text."
+
+Correct Response:
+"Shakespeare, plays, sonnets, English, literature, iambic, pentameter, love, betrayal, destiny"
+---
+Text:
+"Neurology deals with the diagnosis and treatment of all categories of conditions and disease involving the central and peripheral nervous systems, including their coverings, blood vessels, and all effector tissue, such as muscle."
+
+Prompt:
+"From this list of words: neurology, diagnosis, treatment, conditions, diseases, involving, nervous, system, central, peripheral, coverings, blood, vessels, effector, tissue, muscle return only a comma separated list of the most important keywords relevant to the text."
+
+Correct Response:
+"neurology, diagnosis, treatment, nervous, system, central, peripheral, muscle"
+---
+Text:
+"Cryptocurrency is a digital or virtual currency that uses cryptography for security. A defining feature of cryptocurrencies is that they are generally not issued by any central authority, rendering them theoretically immune to government interference or manipulation."
+
+Prompt:
+"From this list of words: cryptocurrency, digital, virtual, currency, uses, cryptography, security, defining, feature, cryptocurrencies, generally, not, issued, central, authority, rendering, immune, government, interference, manipulation return only a comma separated list of the most important keywords relevant to the text."
+
+Correct Response:
+"cryptocurrency, digital, virtual, currency, cryptography, security, central, authority, government, manipulation"
+---

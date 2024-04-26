@@ -4,6 +4,12 @@ import spacy
 
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
+
+import nltk
+
+from notes.models import Note
+nltk.download('wordnet')
 
 from django.core.cache import cache
 import logging
@@ -31,8 +37,29 @@ def strip_html_tags(input_string):
     cleaned = cleaned.replace('&apos;', "'")
     cleaned = cleaned.replace('&#39;', "'")
     cleaned = cleaned.replace('&#34;', '"')
-    
+    cleaned = cleaned.replace('\n', ' ')
+    cleaned = ' '.join(cleaned.split())
     return cleaned
+
+def clean_keywords(text):
+    # Remove newlines and the prompt
+    text = re.sub(r'[\n\r]', ' ', text)  # Replace newlines and carriage returns with space
+    text = re.sub(r'".*?Prompt:.*?"', '', text)  # Attempt to remove the prompt
+    
+    # Split the text into individual words
+    words = re.split(r'[^a-zA-Z-]', text)  # Split on non-alphabetic characters, preserving hyphenated words
+    
+    # Filter out empty strings and overly long words (more than 2 words in a phrase)
+    keywords = [word.strip() for word in words if word and len(word.strip().split()) <= 2]
+    
+    # Deduplicate while preserving order
+    seen = set()
+    keywords = [x for x in keywords if not (x in seen or seen.add(x))]
+    
+    # Create a dictionary with keywords as keys
+    keyword_dict = {keyword: '' for keyword in keywords}
+    
+    return keyword_dict
 
 def strip_prompt(prompt, content):
     try:
@@ -41,7 +68,7 @@ def strip_prompt(prompt, content):
         start_index = 0
     return content[start_index:].strip()
 
-def get_preprocessed_content(note):
+def get_preprocessed_content(note: Note):
     try:
         cache_key = f"preprocessed_{note.pk}"
         preprocessed_content = cache.get(cache_key)
@@ -58,10 +85,17 @@ def get_preprocessed_content(note):
         logging.error(f"Error occurred while preprocessing content: {e}")
         return None
 
-def preprocess_and_extract_keywords(text):
-    text = text.lower()
-    text = text.translate(str.maketrans('', '', string.punctuation))
-    words = word_tokenize(text)
-    stop_words = set(stopwords.words('english'))
-    keywords = [word for word in words if word not in stop_words]
-    return keywords
+def preprocess_group_content(note):
+    
+    # Basic cleanup, HTML strip, lowering cases
+    text = re.sub(r'<[^>]+>', '', note.content) 
+    text = text.lower()  
+    text = text.translate(str.maketrans('', '', string.punctuation)) 
+
+    # Tokenization and more advanced processing like stemming/lemmatization
+    stop_words = set(stopwords.words('english')) - {'over', 'under', 'more', 'most', 'such'}
+    word_tokens = word_tokenize(text)
+    lemmatizer = WordNetLemmatizer()
+    filtered_sentence = [lemmatizer.lemmatize(w) for w in word_tokens if not w in stop_words]
+
+    return ' '.join(filtered_sentence)

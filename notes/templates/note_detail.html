@@ -27,19 +27,21 @@
     <button><a href="{% url 'notes:note_update' note.id %}" class="btn btn-primary">Update</a></button>
     <button><a href="{% url 'notes:note_delete' note.id %}" class="btn btn-danger">Delete</a></button>
   </div>
-
+  
   {% include 'assistant.html' %}
 
   {% comment %} <button class="btn-secondary" id="analyzeNoteBtn" data-note-id="{{ note.id }}" data-analyze-url="{% url 'notes:analyze' note.id %}">Analyze Note</button>
   <div id="analysisResult"></div> {% endcomment %}
 
   <h3>Flashcards</h3>
-  <div id="flashcard-section" style="display:none;">
+  <div id="flashcard-section">
     <div id="flashcard-container">
       <div id="flashcard">
         <div class="card-side" id="term">Term</div>
-        <div class="card-side" id="definition" style="display:none;">Definition</div>
+        <div class="card-side" id="definition">Definition</div>
       </div>
+
+      <button id="generateFlashcardsBtn" type="submit">Generate Flashcards</button>
 
       <div id="flashcard-buttons">
         <button id="prevBtn">Previous</button>
@@ -49,8 +51,9 @@
     </div>
   </div>
 
-  <button type="submit" class="btn-secondary analyze-btn" data-type="keywords" data-note-id="{{ note.id }}" data-analyze-url="{% url 'notes:generate_keywords' note.id %}">Analyze Keywords</button>
-  <button type="submit" class="btn-secondary analyze-btn" data-type="summary" data-note-id="{{ note.id }}" data-analyze-url="{% url 'notes:generate_summary' note.id %}">Analyze Summary</button>
+  {% comment %} <button type="submit" class="btn-secondary analyze-btn" data-type="keywords" data-note-id="{{ note.id }}" data-analyze-url="{% url 'notes:generate_keywords' note.id %}">Analyze Keywords</button> {% endcomment %}
+  
+  <button type="submit" class="btn-secondary analyze-btn" id="analyzeNoteBtn" data-type="summary" data-note-id="{{ note.id }}" data-analyze-url="{% url 'notes:generate_summary' note.id %}">Generate Summary</button>
   <div id="analysisResult"></div>
 
 
@@ -68,14 +71,66 @@
       
       <!-- Hidden CSRF Token Input -->
       <input class="gen-prompt-input" type="hidden" id="csrf-token" value="{{ csrf_token }}">
-      <button id="generate-content-btn" data-note-id="{{ note.id }}" class="btn-secondary">Generate</button>
+      <button type="submit" id="generate-content-btn" data-note-id="{{ note.id }}" class="btn-secondary">Generate</button>
     </div>
   </div>
 
-<div id="content-container" class="content-display-area mt-4 p-3" style="background-color: var(--bg-color); border-radius: 5px;"></div>
+  
+  <div id="content-container" class="content-display-area mt-4 p-3" style="background-color: var(--bg-color); border-radius: 5px;"></div>
 
 </div>
 <style>
+  #flashcard-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; 
+    margin-top: 20px; 
+  }
+  
+  #flashcard-section {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  #flashcard-container {
+    display: inline-block; 
+    margin-bottom: 20px; 
+  }
+  
+  #generateFlashcardsBtn {
+    display: block; 
+    margin: 10px auto;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button {
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid #ccc; 
+    background: #eee; 
+    color: #333; 
+  }
+  
+  button a {
+    text-decoration: none;
+    color: inherit; 
+  }
+  
+  button:hover {
+    background: #ddd; 
+  }
+  
+  button {
+    width: 120px;
+  }
+  
+  .content-area, .button-group, #flashcard-section, .generate-content-form {
+    margin-bottom: 20px;
+  }
   #flashcard-container {
     text-align: center;
   }
@@ -191,55 +246,71 @@
     const prevBtn = document.getElementById('prevBtn');
     const flipBtn = document.getElementById('flipBtn');
     const nextBtn = document.getElementById('nextBtn');
-    const noteId = JSON.parse(document.getElementById('note-id').textContent);    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    
+    const generateFlashcardsBtn = document.getElementById('generateFlashcardsBtn');
+
+    const noteId = document.getElementById('note-id') ? JSON.parse(document.getElementById('note-id').textContent) : null;
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    generateFlashcardsBtn.addEventListener('click', fetchFlashcards);
+
     function fetchFlashcards() {
-        fetch(`/notes/generate-flashcards/${noteId}/`, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': csrfToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ 'note_id': noteId })
-        })
-        .then(response => response.json())
-        .then(data => {
-            flashcards = Object.entries(data);  
-            displayCard(0);  
-            showFlashcardSection();
-        })
-        .catch(error => console.error('Error fetching flashcards:', error));
+      if (!noteId) {
+        console.error('No note ID found!');
+        return;
+      }
+    
+      fetch(`/notes/generate-flashcards/${noteId}/`, {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': csrfToken,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 'note_id': noteId })
+      })
+      .then(response => response.json())
+      .then(data => {
+        flashcards = Object.entries(data);  
+        if (flashcards.length) {
+          displayCard(0);
+          showFlashcardSection();
+        } else {
+          console.error('No flashcards data received');
+        }
+      })
+      .catch(error => console.error('Error fetching flashcards:', error));
     }
     
-    function displayCard(index) {
-        termElement.textContent = flashcards[index][0];
-        definitionElement.textContent = flashcards[index][1];
+    
+  function displayCard(index) {
+    termElement.textContent = flashcards[index][0];
+    definitionElement.textContent = flashcards[index][1];
+    termElement.style.display = '';
+    definitionElement.style.display = 'none';
     }
 
-    flipBtn.addEventListener('click', () => {
-        termElement.style.display = termElement.style.display === 'none' ? '' : 'none';
-        definitionElement.style.display = definitionElement.style.display === 'none' ? '' : 'none';
-    });
+  flipBtn.addEventListener('click', () => {
+    termElement.style.display = termElement.style.display === 'none' ? '' : 'none';
+    definitionElement.style.display = definitionElement.style.display === 'none' ? '' : 'none';
+  });
 
-    prevBtn.addEventListener('click', () => {
-        if (currentCardIndex > 0) {
-            currentCardIndex--;
-            displayCard(currentCardIndex);
-        }
-    });
+  prevBtn.addEventListener('click', () => {
+    if (currentCardIndex > 0) {
+        currentCardIndex--;
+        displayCard(currentCardIndex);
+    }
+  });
 
     nextBtn.addEventListener('click', () => {
-        if (currentCardIndex < flashcards.length - 1) {
-            currentCardIndex++;
-            displayCard(currentCardIndex);
-        }
+    if (currentCardIndex < flashcards.length - 1) {
+        currentCardIndex++;
+        displayCard(currentCardIndex);
+    }
     });
 
     fetchFlashcards();
 
     function showFlashcardSection() {
-      const flashcardSection = document.getElementById('flashcard-section');
-      flashcardSection.style.display = 'block';
+    const flashcardSection = document.getElementById('flashcard-section');
+    flashcardSection.style.display = '';
     }
   });
 
@@ -355,7 +426,48 @@
     }
   });
 
-  // ANALYZE NOTE BUTTON
+  // SUMMARY
+  document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".analyze-btn").forEach(btn => {
+        btn.addEventListener("click", function(e) {
+            e.preventDefault();
+            const noteId = this.getAttribute("data-note-id");
+            const analyzeType = this.getAttribute("data-type");
+            const analyzeUrl = this.getAttribute("data-analyze-url");
+            const postData = new FormData();
+            postData.append('note_id', noteId);
+
+            this.textContent = 'Analyzing...';  
+            this.disabled = true;  
+
+            fetch(analyzeUrl, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams(postData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                const analysisContainer = document.getElementById("analysisResult");
+                let content = `<p>Summary: ${data.summary}</p>`;
+                analysisContainer.innerHTML = content;  // Ensure only summary data is displayed.
+
+                this.textContent = 'Generate Summary';  // Reset button text to original after operation
+                this.disabled = false;  // Re-enable the button
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                this.textContent = 'Generate Summary';  // Reset button text to original on error
+                this.disabled = false;  // Re-enable the button
+                alert('Failed to analyze: ' + error.message);
+            });
+        });
+    });
+  });
+
+  // SUMMARY
   {% comment %} document.addEventListener("DOMContentLoaded", function() {
     const analyzeBtn = document.getElementById("analyzeNoteBtn");
   
@@ -411,10 +523,10 @@
     }
   }); {% endcomment %}
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      document.querySelectorAll(".analyze-btn").forEach(btn => {
-        btn.addEventListener("click", function(e) {
+  
+  {% comment %} document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".analyze-btn").forEach(btn => {
+      btn.addEventListener("click", function(e) {
           e.preventDefault();
           const noteId = this.getAttribute("data-note-id");
           const analyzeType = this.getAttribute("data-type");
@@ -451,55 +563,19 @@
         });
       });
     });
-  </script>
+  
 
-
-  {% comment %} document.querySelectorAll(".analyze-btn").forEach(btn => {
-    btn.addEventListener("click", function(e) {
-      e.preventDefault();
-      
-      const noteId = this.getAttribute("data-note-id");
-      const analyzeType = this.getAttribute("data-type");
-      const analyzeUrl = this.getAttribute("data-analyze-url");
-      const postData = new FormData();
-      postData.append('type', analyzeType);
-      
-      // Animate button while fetching
-      this.textContent = '...';
-      this.disabled = true;
-      
-      fetch(analyzeUrl, {
-        method: 'POST',
-        headers: {
-          'X-CSRFToken': getCookie('csrftoken'),
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams(postData)
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data); 
-        
-        const analysisContainer = document.getElementById("analysisResult");
-        
-        // Update keywords or summary based on the button pressed
-        if (analyzeType === 'keywords') {
-          analysisContainer.innerHTML += `<p>Keywords: ${data.keywords}</p>`;
-        } else if (analyzeType === 'summary') {
-          analysisContainer.innerHTML += `<p>Summary: ${data.summary}</p>`;
-        }
-        
-        btn.textContent = analyzeType === 'keywords' ? 'Analyze Keywords' : 'Analyze Summary';
-        btn.disabled = false;
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        
-        btn.textContent = analyzeType === 'keywords' ? 'Analyze Keywords' : 'Analyze Summary';
-        btn.disabled = false;
-      });
-    });
+  document.getElementById('toggle-update-form').addEventListener('click', function() {
+    var updateForm = document.getElementById('update-form');
+    if (updateForm.style.display === "none") {
+      updateForm.style.display = "block";
+    } else {
+        updateForm.style.display = "none";
+    }
   }); {% endcomment %}
+  
 
 </script>
+
+
 {% endblock %}

@@ -4,13 +4,16 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from django.contrib.auth.models import User
+from django.core.cache import cache
+import logging
+from celery.result import AsyncResult
 
 from notes.models import Note, NoteGroup
 from AIEngine.tasks import *  
 
-# python manage.py test
+# python manage.py test notes.tests.NoteSummaryTestCase
 
-class NoteAnalysisTestCase(TestCase):
+class NoteSummaryTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = User.objects.create_user(username='testuser', password='12345')
@@ -24,37 +27,89 @@ class NoteAnalysisTestCase(TestCase):
     def test_note_analysis(self):
         notes = Note.objects.filter(id__in=[self.note1.id, self.note2.id])
         for note in notes:
-            print(f"\n--- {note.title} Analysis ---")
-            result = analyze_note(note.pk)
+            print(f"\n--- {note.title} Summary ---")
+            result = generate_summary_task(note.pk)
+            # Wait for the task to complete and get the result
+            # result = async_result.get(timeout=30)
             print("Analysis Results:")
-            print(f"SUMMARY: {result['summary']}")
-            print(f"KEYWORDS: {result['keywords']}")
-
+            print(f"SUMMARY: {result}")
+            
+# python manage.py test notes.tests.AutoGroupTestCase
 class AutoGroupTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = User.objects.create_user(username='testuser', password='12345')
-        cls.note1 = Note.objects.create(owner=cls.user, title="Django Testing", content="Testing in Django can be tricky.")
-        cls.note2 = Note.objects.create(owner=cls.user, title="Django Models", content="Django models are essential for database interaction.")
-        cls.note3 = Note.objects.create(owner=cls.user, title="Testing Basics", content="Basics of testing in software development.")
+        cls.note1 = Note.objects.create(owner=cls.user, title="Django Testing", content="Testing in Django can be complex due to its rich and robust framework. A good grasp of Django's testing framework is crucial for effectively writing and running tests. This includes understanding Django's TestCase for database integrity, the SimpleTestCase for middleware testing, and the LiveServerTestCase for end-to-end tests involving HTTP and database interactions. Mastering these can significantly reduce bugs and ensure high-quality software development.")
+        cls.note2 = Note.objects.create(owner=cls.user, title="Django Models", content="Django models form the foundational layer for database interaction within Django. They not only define the structure of the database tables but also provide a systematic approach to handling database queries. By defining fields and behaviors of the data you’re storing, Django models encapsulate database access and are a crucial element in facilitating an organized, efficient, and robust database architecture. Understanding relationships such as ForeignKey, ManyToMany, and OneToOne fields are essential for leveraging the full capability of Django's ORM.")
+        cls.note3 = Note.objects.create(owner=cls.user, title="Testing Basics", content="Understanding the basics of software testing is fundamental to any software development process. Writing tests is crucial as it helps ensure the quality of code and reduces bugs in production. In software development, various testing methodologies are employed, including unit tests that help verify the functionality of a small part of the system, integration tests which ensure that different parts of the application work together as expected, and system tests which evaluate the complete and fully integrated software product. The goal is to catch bugs early in the development cycle and save costs in later stages while maintaining software quality.")
 
-    def test_auto_grouping(self):
-        notes = Note.objects.filter(id__in=[self.note1.id, self.note2.id, self.note3.id])
-        print("\n--- Auto Grouping Test ---")
-        for note in notes:
-            threshold = 0.15
-            group = auto_group_note(note.pk)
+    def test_auto_grouping_individual_notes(self):
+        print("\n--- Auto Grouping Individual Notes Test ---")
+        for note in [self.note1, self.note2, self.note3]:
+            group = auto_group_note(note.pk, threshold=0.10)
             if group:
                 print(f"\nGroup Title: {group.title}")
-                print("Grouped Notes (Threshold 0.15):")
+                print("Grouped Notes (Threshold 0.10):")
                 for grouped_note in group.notes.all():
                     print(f"- {grouped_note.title}")
-                    
             else:
                 print(f"\nNo similar notes found for {note.title}")
-                
 
-    
+    def test_auto_grouping_all_notes(self):
+        print("\n--- Auto Grouping All Notes Test ---")
+        groups: list[NoteGroup] = auto_group_all(threshold=0.15, owner=self.user)
+        if groups:
+            for group in groups:
+                print(f"\nGroup Title: {group.title}")
+                print("Grouped Notes:")
+                for note in group.notes.all():
+                    print(f"- {note.title}")
+        else:
+            print("\nNo groups formed.")
+
+    def test_threshold_variability(self):
+        print("\n--- Testing Threshold Variability ---")
+        thresholds = [0.05, 0.10, 0.15, 0.20]
+        for threshold in thresholds:
+            group = auto_group_note(self.note1.pk, threshold)
+            print(f"\nThreshold: {threshold}")
+            if group:
+                print("Group formed with title:", group.title)
+            else:
+                print("No group formed.")
+
+class GenerateVocabAndKeywordsTaskTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.note = Note.objects.create(owner=self.user, content="Artificial Intelligence (AI) is transforming industries by automating tasks, analyzing vast amounts of data, and solving complex problems. It has applications in various fields such as healthcare, finance, and autonomous driving.")
+
+    def test_generate_vocab_and_keywords(self):
+        flashcards = generate_flashcards_task(self.note.id)
+        
+        print("Flashcards:", flashcards)
+        
+        self.note.refresh_from_db()
+        #print("Updated Keywords:", self.note.keywords)
+
+    def tearDown(self):
+        self.note.delete()
+        self.user.delete()
+
+
+class GetAutocompleteSuggestionsTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.note = Note.objects.create(owner=self.user, content='<p>Last sunday was a breeze! Generally speaking, </p>')
+
+    def test_get_autocomplete_suggestions(self):
+        
+        suggestions = get_autocomplete_suggestions(self.note.id, self.note.content)
+        print("Suggestions:", suggestions)
+
+
+    def tearDown(self):
+        self.note.delete()
+        self.user.delete()
     
 """ DJANGO SHELL TESTS """
 

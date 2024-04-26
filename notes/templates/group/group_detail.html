@@ -3,27 +3,72 @@
 {% block content %}
   <h2>{{ group.title }}</h2>
   <p>{{ group.description }}</p>
+
   <h3>Notes in this group:</h3>
-  <ul>
+
+  <div class="note-cards-container">
     {% for note in notes %}
-      <li>{{ note.title }}</li>
-      {% for note_group in note.group.all %}
-              {{ note_group.title }}{% if not forloop.last %}, {% endif %}
-          {% endfor %}
+      <div class="note-card">
+
+        <h3>{{ note.title }}</h3>
+
+        <div class="card-actions">
+          <a href="{% url 'notes:note_detail' note.pk %}" class="card-action-btn">View</a>
+          <a href="{% url 'notes:note_update' note.pk %}" class="card-action-btn">Edit</a>
+          <a href="{% url 'notes:note_remove_from_group' group_id=group.id note_id=note.id %}" class="card-action-btn" onclick="return confirm('Are you sure you want to remove this note from the group?');">Remove Note</a>
+        </div>
+
+      </div>
     {% endfor %}
-  </ul>
+  </div>
+
   <form method="get" action="">
     <input type="text" name="title" placeholder="Filter by Title" value="{{ request.GET.title }}">
     <input type="date" name="date" placeholder="Filter by Date" value="{{ request.GET.date }}">
     <button type="submit" class="btn btn-secondary">Filter</button>
   </form>
-  <a class="grp-button" href="{% url 'notes:assign-note-to-group' %}">Assign Notes to Group</a>
+
   <a class="grp-button" href="{% url 'notes:group_edit' group.pk %}">Edit Group</a>
   <a class="grp-button" href="{% url 'notes:group_delete' group.pk %}" onclick="return confirm('Are you sure?');">Delete</a>
 
   <a class="grp-button" href="{% url 'notes:group_list' %}">Back to Group List</a>
 
   <style>
+    .note-cards-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .note-card {
+      padding: 10px;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .card-actions {
+      margin-top: 10px;
+      text-align: right;
+    }
+    .card-action-btn {
+      padding: 5px 15px;
+      margin-left: 5px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+    .card-action-btn:hover {
+      background-color: #0056b3;
+    }
+
+    #note-item {
+      padding: 10px;
+      margin-bottom: 8px;
+      list-style: none; 
+      background: #f7f7f7; 
+      border-radius: 4px;
+  }
     #group-buttons {
         display: flex;
         flex-direction: column;
