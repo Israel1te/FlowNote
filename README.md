@@ -318,7 +318,8 @@ We are a team of Texas State University students developing this project as part
 
 ## Next Steps ##
 * **Israel Ibinayin**
-    * "Fill in"
+    * "Add caching to save the user from losing progress"
+    * Implement autosave feature (saves the notes each time user stops typing)
 * **Samuel Pope**
     * Train GPT-2 to fine-tune summarization
     * Allow users to customize their response length and sequence size.
