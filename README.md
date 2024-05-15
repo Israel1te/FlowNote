@@ -329,8 +329,22 @@ We are a team of Texas State University students developing this project as part
     * Add Sort function to other other features.
     * Add Pin function to other features.
     * Add more interactive note features. 
-## Screenshots
-![FlowNote Screenshot](notes/static/notes/css/images/notePage.png)
+## Screenshots and Demo
+
+This showcases the note creation page
+* <img width="700" alt="Screenshot 2024-05-15 at 10 06 18 AM" src="https://github.com/Israel1te/FlowNote/assets/122021958/114f8823-def4-4e88-a7d9-ffb8ad1b6787">
+
+Theme Change Feature
+* <img width="558" alt="Screenshot 2024-05-15 at 10 06 53 AM" src="https://github.com/Israel1te/FlowNote/assets/122021958/4a482d93-d217-445b-b5a9-c0f8294f8aae">
+
+ Note list and About Page in dark mode
+* <img width="716" alt="Screenshot 2024-05-15 at 10 07 09 AM" src="https://github.com/Israel1te/FlowNote/assets/122021958/5e9739c5-981e-4811-8409-5cf8cf0efef5">
+* <img width="700" alt="Screenshot 2024-05-15 at 10 08 11 AM" src="https://github.com/Israel1te/FlowNote/assets/122021958/da4fc1d7-7b4c-424c-9e32-c2edfb0dee14">
+
+ AI Assistant being used
+* <img width="507" alt="Screenshot 2024-05-15 at 10 14 33 AM" src="https://github.com/Israel1te/FlowNote/assets/122021958/9983d01e-e739-4a5d-b79f-21fdd5b2b73b">
+
+
 
 ## Setup
 FlowNote requires Python 3.12.1, MongoDB, and an environment capable of running Django. 
@@ -361,4 +375,4 @@ Project is: _in progress_. Future updates are planned to introduce more sophisti
 - Special thanks to the Django community for their invaluable resources and support.
 
 ## Contact
-Created by Samuel Pope and John Yamamoto - feel free to reach out at sjpope03@gmail.com.
+Samuel Pope, John Yamamoto, Israel Ibinayin, Matthew Ruiz - feel free to reach out at sjpope03@gmail.com, israelibinayin12@gmail.com.
